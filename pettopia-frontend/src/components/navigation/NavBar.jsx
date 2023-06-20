@@ -62,14 +62,13 @@ export default function NavBar() {
             Authorization: localStorage.getItem('token'),
           },
           body: JSON.stringify({
-            success_url: 'orders',
-            cancel_url: 'cart',
+            success_url: '/checkout-success',
+            cancel_url: '/checkout-failed',
           }),
         })
       )
       .then((res) => res.json())
       .then((data) => {
-        //console.log(data.url);
         window.location.assign(data.url);
       })
       .catch((err) => console.error(err));

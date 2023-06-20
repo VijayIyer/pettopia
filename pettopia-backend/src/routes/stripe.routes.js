@@ -135,7 +135,7 @@ router.post('/checkoutCompleted', async (request, response) => {
   }
 
   // Return a 200 response to acknowledge receipt of the event
-  response.send();
+  // response.send();
 });
 
 
