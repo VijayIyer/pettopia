@@ -12,7 +12,6 @@ fields.forEach(field=>fieldsState[field.id]='');
 
 export default function Login(){
     const backendUrl = process.env.REACT_APP_URL
-    console.log(backendUrl)
     const navigate = useNavigate();
     const [loginState,setLoginState]=useState(fieldsState);
     // const { authToken, setAuthToken } = useContext(AppContext);
@@ -27,38 +26,28 @@ export default function Login(){
 
     //Handle Login API Integration here
     const authenticateUser = () =>{
-        
-
-     
         let loginFields={
                 email:loginState['email-address'],
                 password:loginState['password']
         };
-           
         const endpoint=`${backendUrl}/api/v1/auth/login`;
-         fetch(endpoint,
-             {
-             method:'POST',
-             headers: {
-             'Content-Type': 'application/json'
-             },
-             body:JSON.stringify(loginFields)
-             })
-            .then(response=>response.json())
-            .then(data=>{
-                //API Success from LoginRadius Login API
-                // setAuthToken(data.token);
-                localStorage.setItem('token', data.token)
-                navigate(-1);
-             })
-            
-            .catch(error=>console.log(error))
-         }
-    // useEffect(() =>{
-    //     console.log(`setting localStorage token`);
-    //     window.localStorage.setItem('token', authToken);
-    //     navigate('/cart');
-    // }, [authToken]);
+        fetch(endpoint,
+        {
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify(loginFields)
+        })
+        .then(response=>response.json())
+        .then(data=>{
+            //API Success from LoginRadius Login API
+            // setAuthToken(data.token);
+            localStorage.setItem('token', data.token)
+            navigate(-1);
+         })
+        .catch(error=>console.log(error))
+     }
 
     return(
         <div>
