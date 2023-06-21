@@ -23,7 +23,35 @@ function App() {
   const [authToken, setAuthToken] = useState(null);
   const [fetchingCartData, setFetchingCartData] = useState(false);
   const [cartFetchingError, setCartFetchingError] = useState(false);
-
+  const checkoutCart = () => {
+      fetch(`${backendUrl}/api/v1/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: localStorage.getItem('token'),
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => data.orderId)
+        .then((orderId) =>
+          fetch(`${backendUrl}/api/v1/stripe/checkout/${orderId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: localStorage.getItem('token'),
+            },
+            body: JSON.stringify({
+              success_url: '/checkout-success',
+              cancel_url: '/checkout-failed',
+            }),
+          })
+        )
+        .then((res) => res.json())
+        .then((data) => {
+          window.location.assign(data.url);
+        })
+        .catch((err) => console.error(err));
+    };
   const getCart = async (setCartItems) =>{
       try {
         setFetchingCartData(true);
@@ -47,10 +75,8 @@ function App() {
   return (
 
     <AppContext.Provider value={{ 
-      //cartId,
-      // authToken,
-      // setAuthToken
       getCart,
+      checkoutCart,
       backendUrl,
       fetchingCartData,
       cartFetchingError,
