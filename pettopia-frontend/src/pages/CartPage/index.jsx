@@ -6,7 +6,7 @@ import {BsX} from 'react-icons/bs'
 
 export default function CartPage() {
   const { cartItems, setCartItems } = useContext(SearchContext);
-  const { getCart, backendUrl, fetchingCartData, cartFetchingError } =
+  const { getCart, checkoutCart, backendUrl, fetchingCartData, cartFetchingError } =
     useContext(AppContext);
   const navigate = useNavigate();
   const [fetchingData, setFetchingData] = useState(false);
