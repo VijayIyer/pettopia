@@ -11,7 +11,6 @@ const SearchPageListItem = ({ item }) => {
       : splitName[0];
   const description = splitName.filter((item) => item !== defaultBrand).join(' ');
   const { cartItems } = useContext(SearchContext);
-  console.log(`${JSON.stringify(cartItems)}`);
   const {handleAddToCart} = useContext(SearchContext);
 
   return (

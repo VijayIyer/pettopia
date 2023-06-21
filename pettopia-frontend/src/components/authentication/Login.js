@@ -4,6 +4,7 @@ import { useNavigate, state , useLocation} from 'react-router-dom';
 import FormAction from "./FormAction";
 import FormExtra from "./FormExtra";
 import Input from "./Input";
+import ErrorMessage from './ErrorMessage';
 import AppContext from '../../AppContext';
 
 const fields=loginFields;
@@ -14,9 +15,13 @@ export default function Login(){
     const backendUrl = process.env.REACT_APP_URL
     const navigate = useNavigate();
     const [loginState,setLoginState]=useState(fieldsState);
+    const [loginError, setLoginError] = useState(false);
+    const [loginErrorMessage, setLoginErrorMessage] = useState(null);
     // const { authToken, setAuthToken } = useContext(AppContext);
     const handleChange=(e)=>{
         setLoginState({...loginState,[e.target.id]:e.target.value})
+        setLoginError(false);
+        setLoginErrorMessage(null);
     }
 
     const handleSubmit=(e)=>{
@@ -41,10 +46,18 @@ export default function Login(){
         })
         .then(response=>response.json())
         .then(data=>{
+            if(data.ok){
+
             //API Success from LoginRadius Login API
             // setAuthToken(data.token);
             localStorage.setItem('token', data.token)
             navigate(-1);
+            }
+            else{
+                console.log(data);
+                setLoginError(true);
+                setLoginErrorMessage(data.msg);
+            }
          })
         .catch(error=>console.log(error))
      }
@@ -73,8 +86,9 @@ export default function Login(){
         </div>
 
         <FormExtra/>
+        {loginError && <ErrorMessage text={loginErrorMessage} />}
         <FormAction handleSubmit={handleSubmit} text="Login"/>
-
+        
       </form>
       </div>
     )

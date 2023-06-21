@@ -233,7 +233,7 @@ export const SearchProvider = ({children}) => {
 
 
     useEffect(() => {
-    console.log(`line 236 ${process.env.REACT_APP_URL}`)
+    
         if(localStorage.getItem('token') !== null){
           getCart(setCartItems);
         }
